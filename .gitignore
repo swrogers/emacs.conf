@@ -1,0 +1,14 @@
+auto-save-list/
+eln-cache/
+\#*\#
+*~
+elpa/
+recentf
+*.elc
+projectile-bookmarks.eld
+/transient/
+/eshell/
+/.lsp-session-v1
+/.cache/
+/.persp-confs/
+/straight/

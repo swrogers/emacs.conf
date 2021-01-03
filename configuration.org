@@ -1,0 +1,435 @@
+#+TITLE: My Emacs Configuration
+#+AUTHOR: Shane Rogers
+#+EMAIL: swrogers@gmail.com
+
+* My emacs configuration stuff starting with interface items
+
+  The initial interface type items.
+
+  First, I don't need to see the initial loading screen
+  #+begin_src emacs-lisp
+    (setq inhibit-startup-message t)
+  #+end_src
+
+  Now for the rest of the interface elements:
+  1. kill off the scroll bars
+  2. kill off the tool bars
+  3. kill off the menu bar
+  4. set a visible bell marker
+  5. change the yes/no prompts to accept y/n
+  #+begin_src emacs-lisp
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1)
+    (tooltip-mode -1)
+    (set-fringe-mode 10)
+    (menu-bar-mode -1)
+    (setq visible-bell t)
+    (fset 'yes-or-no-p 'y-or-n-p)
+  #+end_src
+
+  I think that the ESC key should be an actual escape key...
+  #+begin_src emacs-lisp
+    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+  #+end_src
+
+  Enable auto pairing for parens and such
+  #+begin_src emacs-lisp
+  (electric-pair-mode 1)
+  #+end_src
+
+  Font settings:
+  #+begin_src emacs-lisp
+    (set-face-attribute
+     'default nil
+    :font "Ubuntu Mono derivative Powerline"
+    )
+  #+end_src
+
+  We don't need no stinking "custom.el" stuff messing up my nice files...
+  #+begin_src emacs-lisp
+  (setq-default custom-file null-device)
+  #+end_src
+
+* Now for package setup - using straight.el
+
+  Packaging setup stuff
+  #+begin_src emacs-lisp
+    (add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa"))
+
+    (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+			     ("melpa-stable" . "http://stable.melpa.org/packages/")
+			     ("melpa" . "http://melpa.org/packages/")
+			     ("org" . "http://orgmode.org/elpa/")))
+
+    (package-initialize)
+  #+end_src
+
+  Will use straight.el for package management this time, which has a default integration with use-package...
+  #+begin_src emacs-lisp
+    (defvar bootstrap-version)
+    (let ((bootstrap-file
+	   (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	  (bootstrap-version 5))
+      (unless (file-exists-p bootstrap-file)
+	(with-current-buffer
+	    (url-retrieve-synchronously
+	     "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+	     'silent 'inhibit-cookies)
+	  (goto-char (point-max))
+	  (eval-print-last-sexp)))
+      (load bootstrap-file nil 'nomessage))
+  #+end_src
+
+  Let us have straight default to use-package integration, so install that
+  #+begin_src emacs-lisp
+    (straight-use-package 'use-package)
+    (setq straight-use-package-by-default t)
+  #+end_src
+
+  Things are likely to get messy with the mode line, so let us diminish things
+  #+begin_src emacs-lisp
+    (use-package diminish)
+  #+end_src
+
+  Things should always be indented properly...always.
+  #+begin_src emacs-lisp
+    (use-package aggressive-indent
+      :config
+      (global-aggressive-indent-mode 1)
+      )
+  #+end_src
+
+* Now that straight/use-package is set up, some other interface items
+
+  I really like the look and feel of the Doom Modeline, so let's use that
+  #+begin_src emacs-lisp
+    (use-package doom-modeline
+      :config
+      (doom-modeline-mode 1)
+      (setq doom-modeline-window-width-limit fill-column)
+      )
+  #+end_src
+
+  Since we're using the doom modeline, we may as well use a couple of
+  doom theme related items, first off solaire mode for thematic changes
+  #+begin_src emacs-lisp
+    (use-package solaire-mode
+      :hook (
+	     (after-init . solaire-global-mode)
+	     )
+      )
+  #+end_src
+
+  Next up we'll get doom themes and a nice theme set up
+  #+begin_src emacs-lisp
+    (use-package doom-themes
+      :config
+      (setq doom-themes-enable-bold t
+	    doom-themes-enable-italic t)
+      (load-theme 'doom-acario-dark t)
+      (doom-themes-visual-bell-config)
+      )
+  #+end_src
+
+  Finally, better demarcation of pairs with rainbow delimeters
+  #+begin_src emacs-lisp
+    (use-package rainbow-delimiters
+      :hook
+      (prog-mode . rainbow-delimiters-mode)
+      )
+  #+end_src
+
+* Now that all the thematic stuff is taken care of, on to interface
+
+  Undo tree is an interesting interface for emacs and undo-ing things
+  #+begin_src emacs-lisp
+    (use-package undo-tree
+      :diminish undo-tree-mode
+      :config
+      (global-undo-tree-mode)
+      (setq undo-tree-visualizer-timestamps t
+	    unto-tree-visualizer-diff t
+	    )
+      )
+  #+end_src
+
+    I like to use Helm for my interaction, since I'm used to spacemacs
+    There are a few keybinds that will be set up here as well.
+    #+begin_src emacs-lisp
+      (use-package helm
+	:diminish helm-mode
+	:bind (
+	       ("C-c h" . helm-command-prefix)
+	       ("M-x" . helm-M-x)
+	       ("C-x b" . helm-mini)
+	       ("C-x C-f" . helm-find-files)
+	       ("C-x r b" . helm-filtered-bookmarks)
+	       ("C-x c o" . helm-occur)
+	       ("C-x c SPC" . helm-all-mark-rings)
+	       ("M-y" . helm-show-kill-ring)
+	       )
+	:config
+	(global-unset-key (kbd "C-x c"))
+	(setq helm-buffers-fuzzy-matching t
+	      helm-recentf-fuzzy-matching t
+	      helm-apropos-fuzzy-match t
+	      helm-M-x-fuzzy-match t)
+	(helm-mode 1)
+	)
+  #+end_src
+
+  If one is using Helm, they may as well use Helm Projectile then!
+  #+begin_src emacs-lisp
+    (use-package helm-projectile
+      :diminish projectile-mode
+      :config
+      (projectile-global-mode)
+      (helm-projectile-on)
+      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+      (setq projectile-completion-system 'helm
+	    projectile-project-search-path '(
+					     "~/projects/"
+					     )
+	    projectile-switch-project-action 'helm-projectile)
+      )
+  #+end_src
+
+  One of the killer applications for emacs is....magit!
+  #+begin_src emacs-lisp
+    (use-package magit
+      :diminish magit-mode
+      :bind (
+	     ("C-c g" . magit-file-dispatch)
+	     )
+      )
+  #+end_src
+
+  Let's use which-key to help out with command keys
+  #+begin_src emacs-lisp
+    (use-package which-key
+      :diminish which-key-mode
+      :config
+      (which-key-mode)
+      )
+  #+end_src
+
+  The emacs help command could use a little bit of, uh, help....
+  #+begin_src emacs-lisp
+    (use-package helpful
+      :bind (
+	     ("C-h f" . helpful-callable)
+	     ("C-h v" . helpful-variable)
+	     ("C-h k" . helpful-key)
+	     ("C-c C-d" . helpful-at-point)
+	     )
+      )
+  #+end_src
+
+  CRUX is a Collection of Riduculuously Useful eXtensions for emacs, so
+  let's use some of what it provides as better utilities for us
+  #+begin_src emacs-lisp
+    (use-package crux
+      :bind(
+	    ;; First kill to end of line, then kill line
+	    ("C-k" . crux-smart-kill-line)
+
+	    ;; Kill line backwards
+	    ("C-<Backspace>" . crux-kill-line-backwards)
+
+	    ;; Insert and properly indent line above current
+	    ("C-S-RET" . crux-smart-open-line-above)
+
+	    ;; Insert empty line and indent properly
+	    ("S-RET" . crux-smart-open-line)
+
+	    ;; Fix indentation in buffer and strip whitespace
+	    ("C-c n" . crux-cleanup-buffer-or-region)
+
+	    ;; Open recently visited file
+	    ("C-c f" . crux-recentf-find-file)
+
+	    ;; Delete current file and buffer
+	    ("C-c D" . crux-delete-file-and-buffer)
+
+	    ;; Rename current buffer and its visiting file if any
+	    ("C-c r" . crux-rename-file-and-buffer)
+
+	    ;; Kill all other open buffers
+	    ("C-c k" . crux-kill-other-buffers)
+
+	    ;; Select other window or most recent buffer
+	    ("M-o" . crux-other-window-or-switch-buffer)
+	    )
+      )
+  #+end_src
+
+* Programming languages and setup
+
+  Starting off with company mode
+  #+begin_src emacs-lisp
+    (use-package company
+      :config
+      (add-hook 'prog-mode-hook 'company-mode)
+      )
+  #+end_src
+
+  Throw in a dash of YASnippet, and some snippets.
+  #+begin_src emacs-lisp
+    (use-package yasnippet
+      :diminish yas-minor-mode
+      :init
+      (yas-global-mode)
+      )
+
+    (use-package yasnippet-snippets)
+  #+end_src
+
+  Emmet Mode is also uber handy for web things
+  #+begin_src emacs-lisp
+    (use-package emmet-mode
+      :diminish emmet-mode
+      :config
+      (add-hook 'sgml-mode-hook 'emmet-mode)
+      (add-hook 'css-mode-hook 'emmet-mode)
+      )
+  #+end_src
+
+  Many packages also depend on flycheck
+  #+begin_src emacs-lisp
+    (use-package flycheck
+      :config
+      (global-flycheck-mode)
+      )
+  #+end_src
+
+  LSP Mode setup
+  #+begin_src emacs-lisp
+    (use-package lsp-mode
+      :commands
+      (lsp lsp-deferred)
+
+      :hook
+      (prog-mode . lsp)
+
+      :init
+      (setq lsp-keymap-prefix "C-c l"
+	    lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols)
+	    )
+
+      :config
+      (lsp-enable-which-key-integration t)
+      (setq lsp-auto-configure t)
+      (lsp-headerline-breadcrumb-mode)
+      (global-set-key (kbd "C-c l") lsp-command-map)
+      )
+  #+end_src
+
+  Interface setup for LSP elements
+  #+begin_src emacs-lisp
+    (use-package lsp-ui
+      :hook
+      (lsp-mode . lsp-ui-mode)
+
+      :custom
+      (lsp-ui-doc-position 'bottom)
+      )
+
+    (use-package helm-lsp)
+  #+end_src
+
+  Integration with company mode and lsp
+  #+begin_src emacs-lisp
+    (use-package company-lsp
+      :config
+      (setq company-lsp-cache-candidates 'auto
+	    company-lsp-async t
+	    company-lsp-enable-recompletion t
+	    )
+      )
+  #+end_src
+
+  Typescript language server
+  Need to also have
+  npm i -g typescript-language-server typescript
+  #+begin_src emacs-lisp
+    (use-package typescript-mode)
+  #+end_src
+
+  Javascript support via rjsx mode
+  #+begin_src emacs-lisp
+    (use-package rjsx-mode
+      :mode (
+	     "\\.js\\'"
+	     "\\.jsx\\'"
+	     )
+
+      :config
+      (setq js2-mode-show-parse-errors nil
+	    js2-mode-show-strict-warnings nil
+	    js2-basic-offset 2
+	    js-indent-level 2
+	    )
+      )
+  #+end_src
+
+  Add node modules path into the js environs
+  #+begin_src emacs-lisp
+    (use-package add-node-modules-path
+      :hook (
+	     ((js2-mode rjsx-mode) . add-node-modules-path)
+	     )
+      )
+  #+end_src
+
+  Javascript Development REPL/Env via Indium
+  npm  i -g indium
+  Also needs .indium.json file in the project root
+  Check out https://indium.readthedocs.io for details
+  #+begin_src emacs-lisp
+    (use-package indium)
+  #+end_src
+
+  Let's use prettier for source code formatting
+  #+begin_src emacs-lisp
+    (use-package prettier-js
+      :hook (
+	     ((js2-mode rjsx-mode) . prettier-js-mode)
+	     )
+      )
+  #+end_src
+
+  Python related stuff now
+  Beginning with anaconda mode
+  #+begin_src emacs-lisp
+    (use-package anaconda-mode
+      :hook (
+	     (python-mode-hook . anaconda-mode-hook)
+	     (python-mode-hook . anaconda-eldoc-mode)
+	     )
+      )
+  #+end_src
+
+  Company anaconda integration
+  #+begin_src emacs-lisp
+    (use-package company-anaconda
+      :config
+      (eval-after-load "company"
+	'(add-to-list 'company-backends 'company-anaconda)
+	)
+
+      :hook (
+	     (python-mode-hook . anaconda-mode)
+	     )
+      )
+  #+end_src
+
+* Big daddy Org Mode stuff now
+
+  First off, org mode itself
+  Should be able to get a list of begin/end templates with "C-c C-,"
+  #+begin_src emacs-lisp
+    (use-package org
+      :custom
+      (org-src-tab-acts-natively t)
+      )
+  #+end_src
