@@ -141,6 +141,14 @@
 
 * Now that all the thematic stuff is taken care of, on to interface
 
+  Dealing with windows in emacs natively is a PITA, so let's try ace-window
+  #+begin_src emacs-lisp
+    (use-package ace-window
+      :config
+      (global-set-key (kbd "M-o") 'ace-window)
+      )
+  #+end_src
+
   Undo tree is an interesting interface for emacs and undo-ing things
   #+begin_src emacs-lisp
     (use-package undo-tree
@@ -153,29 +161,29 @@
       )
   #+end_src
 
-    I like to use Helm for my interaction, since I'm used to spacemacs
-    There are a few keybinds that will be set up here as well.
-    #+begin_src emacs-lisp
-      (use-package helm
-	:diminish helm-mode
-	:bind (
-	       ("C-c h" . helm-command-prefix)
-	       ("M-x" . helm-M-x)
-	       ("C-x b" . helm-mini)
-	       ("C-x C-f" . helm-find-files)
-	       ("C-x r b" . helm-filtered-bookmarks)
-	       ("C-x c o" . helm-occur)
-	       ("C-x c SPC" . helm-all-mark-rings)
-	       ("M-y" . helm-show-kill-ring)
-	       )
-	:config
-	(global-unset-key (kbd "C-x c"))
-	(setq helm-buffers-fuzzy-matching t
-	      helm-recentf-fuzzy-matching t
-	      helm-apropos-fuzzy-match t
-	      helm-M-x-fuzzy-match t)
-	(helm-mode 1)
-	)
+  I like to use Helm for my interaction, since I'm used to spacemacs
+  There are a few keybinds that will be set up here as well.
+  #+begin_src emacs-lisp
+    (use-package helm
+      :diminish helm-mode
+      :bind (
+	     ("C-c h" . helm-command-prefix)
+	     ("M-x" . helm-M-x)
+	     ("C-x b" . helm-mini)
+	     ("C-x C-f" . helm-find-files)
+	     ("C-x r b" . helm-filtered-bookmarks)
+	     ("C-x c o" . helm-occur)
+	     ("C-x c SPC" . helm-all-mark-rings)
+	     ("M-y" . helm-show-kill-ring)
+	     )
+      :config
+      (global-unset-key (kbd "C-x c"))
+      (setq helm-buffers-fuzzy-matching t
+	    helm-recentf-fuzzy-matching t
+	    helm-apropos-fuzzy-match t
+	    helm-M-x-fuzzy-match t)
+      (helm-mode 1)
+      )
   #+end_src
 
   If one is using Helm, they may as well use Helm Projectile then!
@@ -258,7 +266,8 @@
 	    ("C-c k" . crux-kill-other-buffers)
 
 	    ;; Select other window or most recent buffer
-	    ("M-o" . crux-other-window-or-switch-buffer)
+	    ;; ("M-o" . crux-other-window-or-switch-buffer)
+	    ("C-c o" . crux-other-window-or-switch-buffer)
 	    )
       )
   #+end_src
@@ -420,6 +429,14 @@
       :hook (
 	     (python-mode-hook . anaconda-mode)
 	     )
+      )
+  #+end_src
+
+  Lisp type stuff here, starting with Sly
+  #+begin_src emacs-lisp
+    (use-package sly
+      :config
+      (setq inferior-lisp-program "/usr/bin/sbcl")
       )
   #+end_src
 
