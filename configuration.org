@@ -294,6 +294,20 @@
       )
   #+end_src
 
+* Better regular expression parsing
+  Not sure where else to put this, so it's going here. visual-regexp and visual-regexp-steroids looks intriguing
+  #+begin_src emacs-lisp
+    ;; The following is required by the steroids version
+    (use-package visual-regexp)
+
+    (use-package visual-regexp-steroids
+      :config
+      (define-key global-map (kbd "C-c q") 'vr/query-replace)
+      (define-key global-map (kbd "C-r") 'vr/isearch-backward)
+      (define-key global-map (kbd "C-s") 'vr/isearch-forward)
+      )
+  #+end_src
+
 * Programming languages and setup
 
   Starting off with company mode
@@ -472,3 +486,8 @@
       (org-src-tab-acts-natively t)
       )
   #+end_src
+
+* Packages to look at in the near future
+[[https://github.com/manateelazycat/aweshell][aweshell]]
+[[https://web-mode.org][web-mode]]
+

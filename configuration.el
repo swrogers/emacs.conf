@@ -19,6 +19,24 @@
 
 (setq-default custom-file null-device)
 
+(require 'display-line-numbers)
+(defcustom display-line-numbers-exempt-modes
+  '(vterm-mode eshell-mode shell-mode term-mode ansi-term-mode)
+  "Major modes on which to disable the linum mode, exempts them from global requirement"
+  :group 'display-line-numbers
+  :type 'list
+  :version "green"
+  )
+
+(defun display-line-numbers--turn-on ()
+  "turn on line numbers but exempting certain major modes defined in `display-line-numbers-exempt-modes'"
+  (if (and
+       (not (member major-mode display-line-numbers-exempt-modes))
+       (not (minibufferp)))
+      (display-line-numbers-mode)))
+
+(global-display-line-numbers-mode)
+
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa"))
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -74,6 +92,11 @@
 (use-package rainbow-delimiters
   :hook
   (prog-mode . rainbow-delimiters-mode)
+  )
+
+(use-package ace-window
+  :config
+  (global-set-key (kbd "M-o") 'ace-window)
   )
 
 (use-package undo-tree
@@ -171,8 +194,19 @@
 	("C-c k" . crux-kill-other-buffers)
 
 	;; Select other window or most recent buffer
-	("M-o" . crux-other-window-or-switch-buffer)
+	;; ("M-o" . crux-other-window-or-switch-buffer)
+	("C-c o" . crux-other-window-or-switch-buffer)
 	)
+  )
+
+;; The following is required by the steroids version
+(use-package visual-regexp)
+
+(use-package visual-regexp-steroids
+  :config
+  (define-key global-map (kbd "C-c q") 'vr/query-replace)
+  (define-key global-map (kbd "C-r") 'vr/isearch-backward)
+  (define-key global-map (kbd "C-s") 'vr/isearch-forward)
   )
 
 (use-package company
@@ -283,6 +317,11 @@
   :hook (
 	 (python-mode-hook . anaconda-mode)
 	 )
+  )
+
+(use-package sly
+  :config
+  (setq inferior-lisp-program "/usr/bin/sbcl")
   )
 
 (use-package org
