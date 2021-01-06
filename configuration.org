@@ -55,7 +55,7 @@
   #+begin_src emacs-lisp
     (require 'display-line-numbers)
     (defcustom display-line-numbers-exempt-modes
-      '(vterm-mode eshell-mode shell-mode term-mode ansi-term-mode)
+      '(vterm-mode eshell-mode shell-mode term-mode ansi-term-mode treemacs-mode)
       "Major modes on which to disable the linum mode, exempts them from global requirement"
       :group 'display-line-numbers
       :type 'list
@@ -70,6 +70,11 @@
 	  (display-line-numbers-mode)))
 
     (global-display-line-numbers-mode)
+  #+end_src
+
+  Save the location where the cursor was on buffer close
+  #+begin_src emacs-lisp
+    (save-place-mode t)
   #+end_src
 
 * Now for package setup - using straight.el
@@ -118,6 +123,18 @@
     (use-package aggressive-indent
       :config
       (global-aggressive-indent-mode 1)
+      )
+  #+end_src
+
+* Emacs Dashboard
+  #+begin_src emacs-lisp
+    (use-package dashboard
+      :init
+      (setq dashboard-startup-banner 'logo
+	    dashboard-set-heading-icons t
+	    dashboard-set-file-icons t)
+      :config
+      (dashboard-setup-startup-hook)
       )
   #+end_src
 
@@ -486,6 +503,48 @@
       (org-src-tab-acts-natively t)
       )
   #+end_src
+
+* Treemacs and company
+  First, initial treemacs configuration
+  #+begin_src emacs-lisp
+    (use-package treemacs
+      :defer t
+      :bind
+      (:map global-map
+	    ("M-0" . treemacs-select-window)
+	    ("C-x t 1" . treemacs-delete-other-windows)
+	    ("C-x t t" . treemacs)
+	    ("C-x t B" . treemacs-bookmark)
+	    ("C-x t C-t" . treemacs-find-file)
+	    ("C-x t M-t" . treemacs-find-tag))
+      )
+  #+end_src
+
+  Treemacs projectile
+  #+begin_src emacs-lisp
+    (use-package treemacs-projectile
+      :after treemacs projectile
+      )
+  #+end_src
+
+  Treemacs icons dired
+  #+begin_src emacs-lisp
+    (use-package treemacs-icons-dired
+      :after treemacs dired
+      :config
+      (treemacs-icons-dired-mode)
+      )
+  #+end_src
+
+  Treemacs magit
+  #+begin_src emacs-lisp
+    (use-package treemacs-magit
+      :after treemacs magit
+      )
+  #+end_src
+
+  Eventually, I think I'll also use persp-mode, so I'll want to use treemacs-persp.
+  But not today.
 
 * Packages to look at in the near future
 [[https://github.com/manateelazycat/aweshell][aweshell]]

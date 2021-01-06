@@ -21,7 +21,7 @@
 
 (require 'display-line-numbers)
 (defcustom display-line-numbers-exempt-modes
-  '(vterm-mode eshell-mode shell-mode term-mode ansi-term-mode)
+  '(vterm-mode eshell-mode shell-mode term-mode ansi-term-mode treemacs-mode)
   "Major modes on which to disable the linum mode, exempts them from global requirement"
   :group 'display-line-numbers
   :type 'list
@@ -36,6 +36,8 @@
       (display-line-numbers-mode)))
 
 (global-display-line-numbers-mode)
+
+(save-place-mode t)
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa"))
 
@@ -67,6 +69,15 @@
 (use-package aggressive-indent
   :config
   (global-aggressive-indent-mode 1)
+  )
+
+(use-package dashboard
+  :init
+  (setq dashboard-startup-banner 'logo
+	dashboard-set-heading-icons t
+	dashboard-set-file-icons t)
+  :config
+  (dashboard-setup-startup-hook)
   )
 
 (use-package doom-modeline
@@ -327,4 +338,30 @@
 (use-package org
   :custom
   (org-src-tab-acts-natively t)
+  )
+
+(use-package treemacs
+  :defer t
+  :bind
+  (:map global-map
+	("M-0" . treemacs-select-window)
+	("C-x t 1" . treemacs-delete-other-windows)
+	("C-x t t" . treemacs)
+	("C-x t B" . treemacs-bookmark)
+	("C-x t C-t" . treemacs-find-file)
+	("C-x t M-t" . treemacs-find-tag))
+  )
+
+(use-package treemacs-projectile
+  :after treemacs projectile
+  )
+
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :config
+  (treemacs-icons-dired-mode)
+  )
+
+(use-package treemacs-magit
+  :after treemacs magit
   )
