@@ -432,13 +432,14 @@
       )
   #+end_src
 
-** Typescript with  =typescript-mode=
+** Javascript and family
+*** Typescript with  =typescript-mode=
   Need to also have =npm i -g typescript-language-server typescript=
   #+begin_src emacs-lisp
     (use-package typescript-mode)
   #+end_src
 
-**  Javascript with =rjsx-mode=
+***  Javascript with =rjsx-mode=
   #+begin_src emacs-lisp
     (use-package rjsx-mode
       :mode (
@@ -455,7 +456,7 @@
       )
   #+end_src
 
-** Node Modules
+*** Node Modules
    =add-node-modules-path= to any javascript mode
   #+begin_src emacs-lisp
     (use-package add-node-modules-path
@@ -465,15 +466,15 @@
       )
   #+end_src
 
-  Javascript Development REPL/Env via Indium
-  npm  i -g indium
-  Also needs .indium.json file in the project root
+***  Javascript Development REPL/Env via =indium=
+  Requires =npm  i -g indium=
+  Also needs =.indium.json= file in the project root
   Check out https://indium.readthedocs.io for details
   #+begin_src emacs-lisp
     (use-package indium)
   #+end_src
 
-  Let's use prettier for source code formatting
+*** =prettier-js=
   #+begin_src emacs-lisp
     (use-package prettier-js
       :hook (
@@ -482,8 +483,8 @@
       )
   #+end_src
 
-  Python related stuff now
-  Beginning with anaconda mode
+** Python
+*** =anaconda-mode=
   #+begin_src emacs-lisp
     (use-package anaconda-mode
       :hook (
@@ -493,7 +494,7 @@
       )
   #+end_src
 
-  Company anaconda integration
+*** =company-anaconda=
   #+begin_src emacs-lisp
     (use-package company-anaconda
       :config
@@ -507,7 +508,8 @@
       )
   #+end_src
 
-  Lisp type stuff here, starting with Sly
+** Lisp
+*** =sly= using =sbcl=
   #+begin_src emacs-lisp
     (use-package sly
       :config
@@ -515,10 +517,10 @@
       )
   #+end_src
 
-* Big daddy Org Mode stuff now
-
-  First off, org mode itself
-  Should be able to get a list of begin/end templates with "C-c C-,"
+** Org Mode Related
+*** =org= mode first
+Should be able to get a list of begin/end templates with "C-c C-,"
+There will, eventually, be more under the Org Mode banner I'm sure.
   #+begin_src emacs-lisp
     (use-package org
       :custom
@@ -526,8 +528,9 @@
       )
   #+end_src
 
-* Treemacs and company
-  First, initial treemacs configuration
+** Treemacs Related
+*** =treemacs= first
+Also set up some initial keybinds for =treemacs=
   #+begin_src emacs-lisp
     (use-package treemacs
       :defer t
@@ -542,14 +545,14 @@
       )
   #+end_src
 
-  Treemacs projectile
+*** =treemacs-projectile=
   #+begin_src emacs-lisp
     (use-package treemacs-projectile
       :after treemacs projectile
       )
   #+end_src
 
-  Treemacs icons dired
+*** =treemacs-icons-dired=
   #+begin_src emacs-lisp
     (use-package treemacs-icons-dired
       :after treemacs dired
@@ -558,7 +561,7 @@
       )
   #+end_src
 
-  Treemacs magit
+*** =treemacs-magit=
   #+begin_src emacs-lisp
     (use-package treemacs-magit
       :after treemacs magit
