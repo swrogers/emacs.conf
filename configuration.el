@@ -1,12 +1,18 @@
 (setq inhibit-startup-message t)
 
 (scroll-bar-mode -1)
+
 (tool-bar-mode -1)
-(tooltip-mode -1)
-(set-fringe-mode 10)
+
 (menu-bar-mode -1)
+
 (setq visible-bell t)
+
 (fset 'yes-or-no-p 'y-or-n-p)
+
+(tooltip-mode -1)
+
+(set-fringe-mode 10)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -14,8 +20,8 @@
 
 (set-face-attribute
  'default nil
-:font "Ubuntu Mono derivative Powerline"
-)
+ :font "Ubuntu Mono derivative Powerline"
+ )
 
 (setq-default custom-file null-device)
 

@@ -2,80 +2,99 @@
 #+AUTHOR: Shane Rogers
 #+EMAIL: swrogers@gmail.com
 
-* My emacs configuration stuff starting with interface items
+* My emacs configuration stuff
+* Basic User Interface Items
+**  Suppress the startup screen
+   This will be replaced with a dashboard further down in the config.
+   #+begin_src emacs-lisp
+     (setq inhibit-startup-message t)
+   #+end_src
 
-  The initial interface type items.
+** Hide scroll bars
+   #+begin_src emacs-lisp
+     (scroll-bar-mode -1)
+   #+end_src
 
-  First, I don't need to see the initial loading screen
-  #+begin_src emacs-lisp
-    (setq inhibit-startup-message t)
-  #+end_src
+** Hide tool bars
+   #+begin_src emacs-lisp
+     (tool-bar-mode -1)
+   #+end_src
 
-  Now for the rest of the interface elements:
-  1. kill off the scroll bars
-  2. kill off the tool bars
-  3. kill off the menu bar
-  4. set a visible bell marker
-  5. change the yes/no prompts to accept y/n
-  #+begin_src emacs-lisp
-    (scroll-bar-mode -1)
-    (tool-bar-mode -1)
-    (tooltip-mode -1)
-    (set-fringe-mode 10)
-    (menu-bar-mode -1)
-    (setq visible-bell t)
-    (fset 'yes-or-no-p 'y-or-n-p)
-  #+end_src
+** Hide menu bar
+   #+begin_src emacs-lisp
+     (menu-bar-mode -1)
+   #+end_src
 
-  I think that the ESC key should be an actual escape key...
-  #+begin_src emacs-lisp
-    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-  #+end_src
+** Use visible bell
+   #+begin_src emacs-lisp
+     (setq visible-bell t)
+   #+end_src
 
-  Enable auto pairing for parens and such
-  #+begin_src emacs-lisp
-  (electric-pair-mode 1)
-  #+end_src
+** Use y/n shortcut prompts
+   #+begin_src emacs-lisp
+     (fset 'yes-or-no-p 'y-or-n-p)
+   #+end_src
 
-  Font settings:
-  #+begin_src emacs-lisp
-    (set-face-attribute
-     'default nil
-    :font "Ubuntu Mono derivative Powerline"
-    )
-  #+end_src
+** Hide tool tips
+   #+begin_src emacs-lisp
+     (tooltip-mode -1)
+   #+end_src
 
-  We don't need no stinking "custom.el" stuff messing up my nice files...
-  #+begin_src emacs-lisp
-  (setq-default custom-file null-device)
-  #+end_src
+** Set fringe
+   #+begin_src emacs-lisp
+     (set-fringe-mode 10)
+   #+end_src
 
-  Global Line Numbers, from the emacswiki
-  ...the easy way
-  #+begin_src emacs-lisp
-    (require 'display-line-numbers)
-    (defcustom display-line-numbers-exempt-modes
-      '(vterm-mode eshell-mode shell-mode term-mode ansi-term-mode treemacs-mode)
-      "Major modes on which to disable the linum mode, exempts them from global requirement"
-      :group 'display-line-numbers
-      :type 'list
-      :version "green"
+**  Use the Escape key as a quit key
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+   #+end_src
+
+**  Enable auto pairing for parens and such
+   #+begin_src emacs-lisp
+     (electric-pair-mode 1)
+   #+end_src
+
+**  Font settings:
+   #+begin_src emacs-lisp
+     (set-face-attribute
+      'default nil
+      :font "Ubuntu Mono derivative Powerline"
       )
+   #+end_src
 
-    (defun display-line-numbers--turn-on ()
-      "turn on line numbers but exempting certain major modes defined in `display-line-numbers-exempt-modes'"
-      (if (and
-	   (not (member major-mode display-line-numbers-exempt-modes))
-	   (not (minibufferp)))
-	  (display-line-numbers-mode)))
+** Suppress the custom.el cruft
+   #+begin_src emacs-lisp
+     (setq-default custom-file null-device)
+   #+end_src
 
-    (global-display-line-numbers-mode)
-  #+end_src
+**  Global Line Numbers
+   From the emacswiki "the easy way"
+   Add modes that should have line numbers suppressed to the display-line-numbers-exempt-modes list here.
+   #+begin_src emacs-lisp
+     (require 'display-line-numbers)
+     (defcustom display-line-numbers-exempt-modes
+       '(vterm-mode eshell-mode shell-mode term-mode ansi-term-mode treemacs-mode)
+       "Major modes on which to disable the linum mode, exempts them from global requirement"
+       :group 'display-line-numbers
+       :type 'list
+       :version "green"
+       )
 
-  Save the location where the cursor was on buffer close
-  #+begin_src emacs-lisp
-    (save-place-mode t)
-  #+end_src
+     (defun display-line-numbers--turn-on ()
+       "turn on line numbers but exempting certain major modes defined in `display-line-numbers-exempt-modes'"
+       (if (and
+	    (not (member major-mode display-line-numbers-exempt-modes))
+	    (not (minibufferp)))
+	   (display-line-numbers-mode)))
+
+     (global-display-line-numbers-mode)
+   #+end_src
+
+**  Save the location where the cursor was on buffer close
+   #+begin_src emacs-lisp
+     (save-place-mode t)
+   #+end_src
 
 * Now for package setup - using straight.el
 
