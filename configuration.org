@@ -197,9 +197,7 @@
       )
   #+end_src
 
-* Now that all the thematic stuff is taken care of, on to interface
-
-  Dealing with windows in emacs natively is a PITA, so let's try ace-window
+** Dealing with windows in emacs natively is a PITA, so let's try =ace-window=
   #+begin_src emacs-lisp
     (use-package ace-window
       :config
@@ -207,7 +205,8 @@
       )
   #+end_src
 
-  Undo tree is an interesting interface for emacs and undo-ing things
+** =undo-tree=
+   Enable the =undo-tree-visualizer-timestamps= and =undo-tree-visualizer-diff= as well here
   #+begin_src emacs-lisp
     (use-package undo-tree
       :diminish undo-tree-mode
@@ -219,8 +218,9 @@
       )
   #+end_src
 
-  I like to use Helm for my interaction, since I'm used to spacemacs
-  There are a few keybinds that will be set up here as well.
+** =helm=
+  There are a few keybinds that will be set up here as well, along with some fuzzy matching.
+  We will also unset the standard =helm-mode= keybind, since it's too close to the exit emacs version.
   #+begin_src emacs-lisp
     (use-package helm
       :diminish helm-mode
@@ -244,7 +244,9 @@
       )
   #+end_src
 
-  If one is using Helm, they may as well use Helm Projectile then!
+** =helm-projectile=
+   If you're using =helm=, might as well use =helm-projectile= as well.
+   Set the main keybind, our home project directory, and the switch project action here too.
   #+begin_src emacs-lisp
     (use-package helm-projectile
       :diminish projectile-mode
@@ -260,7 +262,7 @@
       )
   #+end_src
 
-  One of the killer applications for emacs is....magit!
+** =magit= is magic!
   #+begin_src emacs-lisp
     (use-package magit
       :diminish magit-mode
@@ -270,7 +272,7 @@
       )
   #+end_src
 
-  Let's use which-key to help out with command keys
+** =which-key=
   #+begin_src emacs-lisp
     (use-package which-key
       :diminish which-key-mode
@@ -279,7 +281,8 @@
       )
   #+end_src
 
-  The emacs help command could use a little bit of, uh, help....
+** =helpful=
+   Have =helpful= replace some of the default not-so-helpful emacs help settings
   #+begin_src emacs-lisp
     (use-package helpful
       :bind (
@@ -291,8 +294,8 @@
       )
   #+end_src
 
-  CRUX is a Collection of Riduculuously Useful eXtensions for emacs, so
-  let's use some of what it provides as better utilities for us
+** =crux=
+   CRUX is a *C*ollection of *R*iduculuously *U*seful e*X*tensions for emacs, so let's use some of what it provides as better utilities for us
   #+begin_src emacs-lisp
     (use-package crux
       :bind(
@@ -330,8 +333,7 @@
       )
   #+end_src
 
-* Better regular expression parsing
-  Not sure where else to put this, so it's going here. visual-regexp and visual-regexp-steroids looks intriguing
+** Better regular expression parsing with =visual-regexp-steroids=
   #+begin_src emacs-lisp
     ;; The following is required by the steroids version
     (use-package visual-regexp)
@@ -344,9 +346,9 @@
       )
   #+end_src
 
-* Programming languages and setup
+* Programming Languages and Related
 
-  Starting off with company mode
+** =company-mode=
   #+begin_src emacs-lisp
     (use-package company
       :config
@@ -354,7 +356,7 @@
       )
   #+end_src
 
-  Throw in a dash of YASnippet, and some snippets.
+** =yasnippet= and =yasnippet-snippets=
   #+begin_src emacs-lisp
     (use-package yasnippet
       :diminish yas-minor-mode
@@ -365,7 +367,7 @@
     (use-package yasnippet-snippets)
   #+end_src
 
-  Emmet Mode is also uber handy for web things
+** =emmet-mode=
   #+begin_src emacs-lisp
     (use-package emmet-mode
       :diminish emmet-mode
@@ -375,7 +377,7 @@
       )
   #+end_src
 
-  Many packages also depend on flycheck
+** =flycheck=
   #+begin_src emacs-lisp
     (use-package flycheck
       :config
@@ -383,7 +385,8 @@
       )
   #+end_src
 
-  LSP Mode setup
+** =lsp-mode=
+   Activate in any programming mode, set its command key prefix, turn on breadcrumbs and =which-key= integration.
   #+begin_src emacs-lisp
     (use-package lsp-mode
       :commands
@@ -405,7 +408,7 @@
       )
   #+end_src
 
-  Interface setup for LSP elements
+** =lsp-ui=
   #+begin_src emacs-lisp
     (use-package lsp-ui
       :hook
@@ -418,7 +421,7 @@
     (use-package helm-lsp)
   #+end_src
 
-  Integration with company mode and lsp
+** =company-lsp=
   #+begin_src emacs-lisp
     (use-package company-lsp
       :config
@@ -429,14 +432,13 @@
       )
   #+end_src
 
-  Typescript language server
-  Need to also have
-  npm i -g typescript-language-server typescript
+** Typescript with  =typescript-mode=
+  Need to also have =npm i -g typescript-language-server typescript=
   #+begin_src emacs-lisp
     (use-package typescript-mode)
   #+end_src
 
-  Javascript support via rjsx mode
+**  Javascript with =rjsx-mode=
   #+begin_src emacs-lisp
     (use-package rjsx-mode
       :mode (
@@ -453,7 +455,8 @@
       )
   #+end_src
 
-  Add node modules path into the js environs
+** Node Modules
+   =add-node-modules-path= to any javascript mode
   #+begin_src emacs-lisp
     (use-package add-node-modules-path
       :hook (
