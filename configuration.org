@@ -69,8 +69,8 @@
    #+end_src
 
 **  Global Line Numbers
-   From the emacswiki "the easy way"
-   Add modes that should have line numbers suppressed to the display-line-numbers-exempt-modes list here.
+   From the emacswiki [[https://www.emacswiki.org/emacs/LineNumbers#h5o-1][the easy way]]
+   Add modes that should have line numbers suppressed to the =display-line-numbers-exempt-modes= list here.
    #+begin_src emacs-lisp
      (require 'display-line-numbers)
      (defcustom display-line-numbers-exempt-modes
@@ -96,9 +96,9 @@
      (save-place-mode t)
    #+end_src
 
-* Now for package setup - using straight.el
+* Now for package setup - using =straight.el=
 
-  Packaging setup stuff
+** Packaging setup stuff
   #+begin_src emacs-lisp
     (add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa"))
 
@@ -110,7 +110,7 @@
     (package-initialize)
   #+end_src
 
-  Will use straight.el for package management this time, which has a default integration with use-package...
+**  Use =straight.el= for package management
   #+begin_src emacs-lisp
     (defvar bootstrap-version)
     (let ((bootstrap-file
@@ -126,18 +126,19 @@
       (load bootstrap-file nil 'nomessage))
   #+end_src
 
-  Let us have straight default to use-package integration, so install that
+** =straight.el= defaults to =use-package.el=, so configure that as well
   #+begin_src emacs-lisp
     (straight-use-package 'use-package)
     (setq straight-use-package-by-default t)
   #+end_src
 
-  Things are likely to get messy with the mode line, so let us diminish things
+* Post =straight.el= setup interface items
+** =diminish= to keep the modeline clean
   #+begin_src emacs-lisp
     (use-package diminish)
   #+end_src
 
-  Things should always be indented properly...always.
+** Use =aggressive-indent.el= to keep things straight
   #+begin_src emacs-lisp
     (use-package aggressive-indent
       :config
@@ -145,7 +146,7 @@
       )
   #+end_src
 
-* Emacs Dashboard
+** Emacs Dashboard
   #+begin_src emacs-lisp
     (use-package dashboard
       :init
@@ -157,9 +158,7 @@
       )
   #+end_src
 
-* Now that straight/use-package is set up, some other interface items
-
-  I really like the look and feel of the Doom Modeline, so let's use that
+** =doom-modeline= because it looks nice
   #+begin_src emacs-lisp
     (use-package doom-modeline
       :config
@@ -168,8 +167,7 @@
       )
   #+end_src
 
-  Since we're using the doom modeline, we may as well use a couple of
-  doom theme related items, first off solaire mode for thematic changes
+** =solaire-mode= will be used by =doom-themes=
   #+begin_src emacs-lisp
     (use-package solaire-mode
       :hook (
@@ -178,7 +176,8 @@
       )
   #+end_src
 
-  Next up we'll get doom themes and a nice theme set up
+** =doom-themes= and =doom-themes-visual-bell=
+   I like the look and feel of =doom-acario-dark=
   #+begin_src emacs-lisp
     (use-package doom-themes
       :config
@@ -189,7 +188,8 @@
       )
   #+end_src
 
-  Finally, better demarcation of pairs with rainbow delimeters
+** =rainbow-delimiters=
+   Helps to demarcate parens and such
   #+begin_src emacs-lisp
     (use-package rainbow-delimiters
       :hook
