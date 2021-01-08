@@ -279,7 +279,28 @@
 (use-package indium)
 
 (use-package prettier-js
-  :hook (((js2-mode rjsx-mode) . prettier-js-mode)))
+  :hook (((js2-mode rjsx-mode) . prettier-js-mode))
+  :custom (prettier-js-args '("--print-width" "100"
+			      "--single-quote" "true"
+			      "--trailing-comma" "all")))
+
+(use-package json-mode
+  :mode "\\.json\\'"
+  :hook (before-save . my/json-mode-before-save-hook)
+  :preface
+  (defun my/json-mode-before-save-hook ()
+    (when (eq major-mode 'json-mode)
+      (json-pretty-print-buffer)))
+
+  (defun my/json-array-of-numbers-on-one-line (encode array)
+    "Prints the arrays of numbers in one line."
+    (let* ((json-encoding-pretty-print
+	    (and json-encoding-pretty-print
+		 (not (loop for x across array always (numberp x)))))
+	   (json-encoding-separator (if json-encoding-pretty-print "," ", ")))
+      (funcall encode array)))
+
+  :config (advice-add 'json-encode-array :around #'my/json-array-of-numbers-on-one-line))
 
 (use-package anaconda-mode
   :hook ((python-mode-hook . anaconda-mode-hook)
