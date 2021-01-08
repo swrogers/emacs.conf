@@ -20,8 +20,7 @@
 
 (set-face-attribute
  'default nil
- :font "Ubuntu Mono derivative Powerline"
- )
+ :font "Ubuntu Mono derivative Powerline")
 
 (setq-default custom-file null-device)
 
@@ -31,8 +30,7 @@
   "Major modes on which to disable the linum mode, exempts them from global requirement"
   :group 'display-line-numbers
   :type 'list
-  :version "green"
-  )
+  :version "green")
 
 (defun display-line-numbers--turn-on ()
   "turn on line numbers but exempting certain major modes defined in `display-line-numbers-exempt-modes'"
@@ -72,10 +70,11 @@
 
 (use-package diminish)
 
+(use-package all-the-icons)
+
 (use-package aggressive-indent
   :config
-  (global-aggressive-indent-mode 1)
-  )
+  (global-aggressive-indent-mode 1))
 
 (use-package dashboard
   :init
@@ -83,47 +82,38 @@
 	dashboard-set-heading-icons t
 	dashboard-set-file-icons t)
   :config
-  (dashboard-setup-startup-hook)
-  )
+  (dashboard-setup-startup-hook))
 
 (use-package doom-modeline
   :config
   (doom-modeline-mode 1)
-  (setq doom-modeline-window-width-limit fill-column)
-  )
+  (setq doom-modeline-window-width-limit fill-column))
 
 (use-package solaire-mode
   :hook (
-	 (after-init . solaire-global-mode)
-	 )
-  )
+	 (after-init . solaire-global-mode)))
 
 (use-package doom-themes
   :config
   (setq doom-themes-enable-bold t
 	doom-themes-enable-italic t)
   (load-theme 'doom-acario-dark t)
-  (doom-themes-visual-bell-config)
-  )
+  (doom-themes-visual-bell-config))
 
 (use-package rainbow-delimiters
   :hook
-  (prog-mode . rainbow-delimiters-mode)
-  )
+  (prog-mode . rainbow-delimiters-mode))
 
 (use-package ace-window
   :config
-  (global-set-key (kbd "M-o") 'ace-window)
-  )
+  (global-set-key (kbd "M-o") 'ace-window))
 
 (use-package undo-tree
   :diminish undo-tree-mode
   :config
   (global-undo-tree-mode)
   (setq undo-tree-visualizer-timestamps t
-	unto-tree-visualizer-diff t
-	)
-  )
+	unto-tree-visualizer-diff t))
 
 (use-package helm
   :diminish helm-mode
@@ -135,16 +125,14 @@
 	 ("C-x r b" . helm-filtered-bookmarks)
 	 ("C-x c o" . helm-occur)
 	 ("C-x c SPC" . helm-all-mark-rings)
-	 ("M-y" . helm-show-kill-ring)
-	 )
+	 ("M-y" . helm-show-kill-ring))
   :config
   (global-unset-key (kbd "C-x c"))
   (setq helm-buffers-fuzzy-matching t
 	helm-recentf-fuzzy-matching t
 	helm-apropos-fuzzy-match t
 	helm-M-x-fuzzy-match t)
-  (helm-mode 1)
-  )
+  (helm-mode 1))
 
 (use-package helm-projectile
   :diminish projectile-mode
@@ -153,33 +141,23 @@
   (helm-projectile-on)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (setq projectile-completion-system 'helm
-	projectile-project-search-path '(
-					 "~/projects/"
-					 )
-	projectile-switch-project-action 'helm-projectile)
-  )
+	projectile-project-search-path '("~/projects/")
+	projectile-switch-project-action 'helm-projectile))
 
 (use-package magit
   :diminish magit-mode
-  :bind (
-	 ("C-c g" . magit-file-dispatch)
-	 )
-  )
+  :bind (("C-c g" . magit-file-dispatch)))
 
 (use-package which-key
   :diminish which-key-mode
   :config
-  (which-key-mode)
-  )
+  (which-key-mode))
 
 (use-package helpful
-  :bind (
-	 ("C-h f" . helpful-callable)
+  :bind (("C-h f" . helpful-callable)
 	 ("C-h v" . helpful-variable)
 	 ("C-h k" . helpful-key)
-	 ("C-c C-d" . helpful-at-point)
-	 )
-  )
+	 ("C-c C-d" . helpful-at-point)))
 
 (use-package crux
   :bind(
@@ -212,9 +190,7 @@
 
 	;; Select other window or most recent buffer
 	;; ("M-o" . crux-other-window-or-switch-buffer)
-	("C-c o" . crux-other-window-or-switch-buffer)
-	)
-  )
+	("C-c o" . crux-other-window-or-switch-buffer)))
 
 ;; The following is required by the steroids version
 (use-package visual-regexp)
@@ -223,19 +199,16 @@
   :config
   (define-key global-map (kbd "C-c q") 'vr/query-replace)
   (define-key global-map (kbd "C-r") 'vr/isearch-backward)
-  (define-key global-map (kbd "C-s") 'vr/isearch-forward)
-  )
+  (define-key global-map (kbd "C-s") 'vr/isearch-forward))
 
 (use-package company
   :config
-  (add-hook 'prog-mode-hook 'company-mode)
-  )
+  (add-hook 'prog-mode-hook 'company-mode))
 
 (use-package yasnippet
   :diminish yas-minor-mode
   :init
-  (yas-global-mode)
-  )
+  (yas-global-mode))
 
 (use-package yasnippet-snippets)
 
@@ -243,13 +216,11 @@
   :diminish emmet-mode
   :config
   (add-hook 'sgml-mode-hook 'emmet-mode)
-  (add-hook 'css-mode-hook 'emmet-mode)
-  )
+  (add-hook 'css-mode-hook 'emmet-mode))
 
 (use-package flycheck
   :config
-  (global-flycheck-mode)
-  )
+  (global-flycheck-mode))
 
 (use-package lsp-mode
   :commands
@@ -260,23 +231,20 @@
 
   :init
   (setq lsp-keymap-prefix "C-c l"
-	lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols)
-	)
+	lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
 
   :config
   (lsp-enable-which-key-integration t)
   (setq lsp-auto-configure t)
   (lsp-headerline-breadcrumb-mode)
-  (global-set-key (kbd "C-c l") lsp-command-map)
-  )
+  (global-set-key (kbd "C-c l") lsp-command-map))
 
 (use-package lsp-ui
   :hook
   (lsp-mode . lsp-ui-mode)
 
   :custom
-  (lsp-ui-doc-position 'bottom)
-  )
+  (lsp-ui-doc-position 'bottom))
 
 (use-package helm-lsp)
 
@@ -284,67 +252,46 @@
   :config
   (setq company-lsp-cache-candidates 'auto
 	company-lsp-async t
-	company-lsp-enable-recompletion t
-	)
-  )
+	company-lsp-enable-recompletion t))
 
 (use-package typescript-mode)
 
 (use-package rjsx-mode
-  :mode (
-	 "\\.js\\'"
-	 "\\.jsx\\'"
-	 )
+  :mode ("\\.js\\'"
+	 "\\.jsx\\'")
 
   :config
   (setq js2-mode-show-parse-errors nil
 	js2-mode-show-strict-warnings nil
 	js2-basic-offset 2
-	js-indent-level 2
-	)
-  )
+	js-indent-level 2))
 
 (use-package add-node-modules-path
-  :hook (
-	 ((js2-mode rjsx-mode) . add-node-modules-path)
-	 )
-  )
+  :hook (((js2-mode rjsx-mode) . add-node-modules-path)))
 
 (use-package indium)
 
 (use-package prettier-js
-  :hook (
-	 ((js2-mode rjsx-mode) . prettier-js-mode)
-	 )
-  )
+  :hook (((js2-mode rjsx-mode) . prettier-js-mode)))
 
 (use-package anaconda-mode
-  :hook (
-	 (python-mode-hook . anaconda-mode-hook)
-	 (python-mode-hook . anaconda-eldoc-mode)
-	 )
-  )
+  :hook ((python-mode-hook . anaconda-mode-hook)
+	 (python-mode-hook . anaconda-eldoc-mode)))
 
 (use-package company-anaconda
   :config
   (eval-after-load "company"
-    '(add-to-list 'company-backends 'company-anaconda)
-    )
+    '(add-to-list 'company-backends 'company-anaconda))
 
-  :hook (
-	 (python-mode-hook . anaconda-mode)
-	 )
-  )
+  :hook ((python-mode-hook . anaconda-mode)))
 
 (use-package sly
   :config
-  (setq inferior-lisp-program "/usr/bin/sbcl")
-  )
+  (setq inferior-lisp-program "/usr/bin/sbcl"))
 
 (use-package org
   :custom
-  (org-src-tab-acts-natively t)
-  )
+  (org-src-tab-acts-natively t))
 
 (use-package treemacs
   :defer t
@@ -355,19 +302,15 @@
 	("C-x t t" . treemacs)
 	("C-x t B" . treemacs-bookmark)
 	("C-x t C-t" . treemacs-find-file)
-	("C-x t M-t" . treemacs-find-tag))
-  )
+	("C-x t M-t" . treemacs-find-tag)))
 
 (use-package treemacs-projectile
-  :after treemacs projectile
-  )
+  :after treemacs projectile)
 
 (use-package treemacs-icons-dired
   :after treemacs dired
   :config
-  (treemacs-icons-dired-mode)
-  )
+  (treemacs-icons-dired-mode))
 
 (use-package treemacs-magit
-  :after treemacs magit
-  )
+  :after treemacs magit)
