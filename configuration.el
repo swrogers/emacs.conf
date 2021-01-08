@@ -212,11 +212,18 @@
 
 (use-package yasnippet-snippets)
 
+(use-package css-mode
+  :custom (css-indent-offset 2))
+
+(use-package less-css-mode
+  :mode "\\.less\\'")
+
+(use-package scss-mode
+  :mode "\\.scss\\'")
+
 (use-package emmet-mode
   :diminish emmet-mode
-  :config
-  (add-hook 'sgml-mode-hook 'emmet-mode)
-  (add-hook 'css-mode-hook 'emmet-mode))
+  :hook (css-mode sgml-mode web-mode))
 
 (use-package flycheck
   :config
