@@ -43,6 +43,25 @@
 
 (save-place-mode t)
 
+(defvar --backup-directory (concat user-emacs-directory "backups"))
+
+(if (not (file-exists-p --backup-directory))
+    (make-directory --backup-directory))
+
+(setq backup-directory-alist `(("." .  ,--backup-directory)))
+
+(setq make-backup-files t          ; backup of a file the first time it is saved
+      backup-by-copying t          ; don't clobber symlinks
+      version-control t            ; version numbers for backup files
+      delete-old-versions t        ; delete excess backup files silently
+      delete-by-moving-to-trash t
+      kept-old-versions 6          ; oldest versions to keep
+      kept-new-versions 9          ; newest versions to keep
+      auto-save-default t          ; auto-save every buffer that visits a file
+      auto-save-timeout 20         ; seconds idle before save
+      auto-save-interval 200       ; keystrokes between autosaves
+      )
+
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa"))
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -211,6 +230,28 @@
   (yas-global-mode))
 
 (use-package yasnippet-snippets)
+
+(use-package web-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'"     . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html?\\'"     . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'"   . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'"   . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'"       . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.mustache\\'"  . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.djhtml\\'"    . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.js\\'"        . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'"       . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.css\\'"       . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.scss\\'"      . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.less\\'"      . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.xml\\'"       . web-mode))
+  (setq web-mode-markup-indent-offset 2
+	web-mode-css-indent-offset 2
+	web-mode-code-indent-offset 2
+	web-mode-enable-auto-pairing t
+	web-mode-enable-css-colorization t))
 
 (use-package css-mode
   :custom (css-indent-offset 2))
