@@ -99,7 +99,10 @@
   :init
   (setq dashboard-startup-banner 'logo
 	dashboard-set-heading-icons t
-	dashboard-set-file-icons t)
+	dashboard-set-file-icons t
+	dashboard-projects-backend 'projectile
+	dashboard-items '((recents . 5)
+			  (projects . 5)))
   :config
   (dashboard-setup-startup-hook))
 
